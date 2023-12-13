@@ -1,0 +1,40 @@
+{
+  "kind": "collectionType",
+  "collectionName": "sites",
+  "info": {
+    "singularName": "site",
+    "pluralName": "sites",
+    "displayName": "Site"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "creationDate": {
+      "type": "date"
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "name"
+    },
+    "description": {
+      "type": "richtext"
+    },
+    "numberOfMachines": {
+      "type": "integer"
+    },
+    "machineType": {
+      "type": "enumeration",
+      "enum": [
+        "M30S++",
+        "M50",
+        "S19 XP",
+        "S19k pro"
+      ]
+    }
+  }
+}
