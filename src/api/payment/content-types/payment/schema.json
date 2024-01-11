@@ -1,0 +1,36 @@
+{
+  "kind": "collectionType",
+  "collectionName": "payments",
+  "info": {
+    "singularName": "payment",
+    "pluralName": "payments",
+    "displayName": "Payment"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "amountUsd": {
+      "type": "float",
+      "required": false
+    },
+    "amountBtc": {
+      "type": "float"
+    },
+    "date": {
+      "type": "date",
+      "required": true
+    },
+    "fee": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::fee.fee"
+    }
+  }
+}

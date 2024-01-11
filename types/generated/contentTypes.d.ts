@@ -362,33 +362,6 @@ export interface AdminTransferTokenPermission extends Schema.CollectionType {
   };
 }
 
-export interface ApiSiteSite extends Schema.CollectionType {
-  collectionName: 'sites';
-  info: {
-    singularName: 'site';
-    pluralName: 'sites';
-    displayName: 'Site';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    name: Attribute.String;
-    creationDate: Attribute.Date;
-    slug: Attribute.UID<'api::site.site', 'name'>;
-    description: Attribute.RichText;
-    numberOfMachines: Attribute.Integer;
-    machineType: Attribute.Enumeration<['M30S++', 'M50', 'S19 XP', 'S19k pro']>;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<'api::site.site', 'oneToOne', 'admin::user'> &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<'api::site.site', 'oneToOne', 'admin::user'> &
-      Attribute.Private;
-  };
-}
-
 export interface PluginUploadFile extends Schema.CollectionType {
   collectionName: 'files';
   info: {
@@ -502,6 +475,50 @@ export interface PluginUploadFolder extends Schema.CollectionType {
       Attribute.Private;
     updatedBy: Attribute.Relation<
       'plugin::upload.folder',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface PluginI18NLocale extends Schema.CollectionType {
+  collectionName: 'i18n_locale';
+  info: {
+    singularName: 'locale';
+    pluralName: 'locales';
+    collectionName: 'locales';
+    displayName: 'Locale';
+    description: '';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  pluginOptions: {
+    'content-manager': {
+      visible: false;
+    };
+    'content-type-builder': {
+      visible: false;
+    };
+  };
+  attributes: {
+    name: Attribute.String &
+      Attribute.SetMinMax<{
+        min: 1;
+        max: 50;
+      }>;
+    code: Attribute.String & Attribute.Unique;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'plugin::i18n.locale',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'plugin::i18n.locale',
       'oneToOne',
       'admin::user'
     > &
@@ -660,43 +677,491 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
   };
 }
 
-export interface PluginI18NLocale extends Schema.CollectionType {
-  collectionName: 'i18n_locale';
+export interface ApiContainerContainer extends Schema.CollectionType {
+  collectionName: 'containers';
   info: {
-    singularName: 'locale';
-    pluralName: 'locales';
-    collectionName: 'locales';
-    displayName: 'Locale';
+    singularName: 'container';
+    pluralName: 'containers';
+    displayName: 'Container';
     description: '';
   };
   options: {
-    draftAndPublish: false;
-  };
-  pluginOptions: {
-    'content-manager': {
-      visible: false;
-    };
-    'content-type-builder': {
-      visible: false;
-    };
+    draftAndPublish: true;
   };
   attributes: {
-    name: Attribute.String &
-      Attribute.SetMinMax<{
-        min: 1;
-        max: 50;
-      }>;
-    code: Attribute.String & Attribute.Unique;
+    name: Attribute.String & Attribute.Required & Attribute.Unique;
+    totalMachines: Attribute.Integer & Attribute.Required;
+    machine: Attribute.Relation<
+      'api::container.container',
+      'manyToOne',
+      'api::machine.machine'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
-      'plugin::i18n.locale',
+      'api::container.container',
       'oneToOne',
       'admin::user'
     > &
       Attribute.Private;
     updatedBy: Attribute.Relation<
-      'plugin::i18n.locale',
+      'api::container.container',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiContractorContractor extends Schema.CollectionType {
+  collectionName: 'contractors';
+  info: {
+    singularName: 'contractor';
+    pluralName: 'contractors';
+    displayName: 'Contractor';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    name: Attribute.String & Attribute.Required;
+    role: Attribute.String & Attribute.Required;
+    url: Attribute.String;
+    logo: Attribute.Media;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::contractor.contractor',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::contractor.contractor',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiEnergyEnergy extends Schema.CollectionType {
+  collectionName: 'energies';
+  info: {
+    singularName: 'energy';
+    pluralName: 'energies';
+    displayName: 'energy';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+  };
+  attributes: {
+    type: Attribute.String &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    site: Attribute.Relation<
+      'api::energy.energy',
+      'manyToOne',
+      'api::site.site'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::energy.energy',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::energy.energy',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    localizations: Attribute.Relation<
+      'api::energy.energy',
+      'oneToMany',
+      'api::energy.energy'
+    >;
+    locale: Attribute.String;
+  };
+}
+
+export interface ApiFeeFee extends Schema.CollectionType {
+  collectionName: 'fees';
+  info: {
+    singularName: 'fee';
+    pluralName: 'fees';
+    displayName: 'Fee';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    rate: Attribute.Decimal;
+    contractor: Attribute.Relation<
+      'api::fee.fee',
+      'oneToOne',
+      'api::contractor.contractor'
+    >;
+    type: Attribute.String & Attribute.Required & Attribute.Unique;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<'api::fee.fee', 'oneToOne', 'admin::user'> &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<'api::fee.fee', 'oneToOne', 'admin::user'> &
+      Attribute.Private;
+  };
+}
+
+export interface ApiLocalisationLocalisation extends Schema.CollectionType {
+  collectionName: 'localisations';
+  info: {
+    singularName: 'localisation';
+    pluralName: 'localisations';
+    displayName: 'Localisation';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+  };
+  attributes: {
+    place: Attribute.String &
+      Attribute.Required &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    country: Attribute.String &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::localisation.localisation',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::localisation.localisation',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    localizations: Attribute.Relation<
+      'api::localisation.localisation',
+      'oneToMany',
+      'api::localisation.localisation'
+    >;
+    locale: Attribute.String;
+  };
+}
+
+export interface ApiMachineMachine extends Schema.CollectionType {
+  collectionName: 'machines';
+  info: {
+    singularName: 'machine';
+    pluralName: 'machines';
+    displayName: 'Machine';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    Type: Attribute.String;
+    TeraHashrate: Attribute.Integer;
+    Watt: Attribute.Integer;
+    containers: Attribute.Relation<
+      'api::machine.machine',
+      'oneToMany',
+      'api::container.container'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::machine.machine',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::machine.machine',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiPaymentPayment extends Schema.CollectionType {
+  collectionName: 'payments';
+  info: {
+    singularName: 'payment';
+    pluralName: 'payments';
+    displayName: 'Payment';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    name: Attribute.String & Attribute.Required & Attribute.Unique;
+    amountUsd: Attribute.Float;
+    amountBtc: Attribute.Float;
+    date: Attribute.Date & Attribute.Required;
+    fee: Attribute.Relation<'api::payment.payment', 'oneToOne', 'api::fee.fee'>;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::payment.payment',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::payment.payment',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiSiteSite extends Schema.CollectionType {
+  collectionName: 'sites';
+  info: {
+    singularName: 'site';
+    pluralName: 'sites';
+    displayName: 'Site';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+  };
+  attributes: {
+    name: Attribute.String &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    creationDate: Attribute.Date &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    slug: Attribute.UID<'api::site.site', 'name'>;
+    description: Attribute.RichText &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    electricityPrice: Attribute.Decimal &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    electricityContractDuration: Attribute.String &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    cooling: Attribute.String &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    energy: Attribute.Relation<
+      'api::site.site',
+      'oneToMany',
+      'api::energy.energy'
+    >;
+    localisation: Attribute.Relation<
+      'api::site.site',
+      'oneToOne',
+      'api::localisation.localisation'
+    >;
+    containers: Attribute.Relation<
+      'api::site.site',
+      'oneToMany',
+      'api::container.container'
+    >;
+    fees: Attribute.Relation<'api::site.site', 'oneToMany', 'api::fee.fee'>;
+    payments: Attribute.Relation<
+      'api::site.site',
+      'oneToMany',
+      'api::payment.payment'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<'api::site.site', 'oneToOne', 'admin::user'> &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<'api::site.site', 'oneToOne', 'admin::user'> &
+      Attribute.Private;
+    localizations: Attribute.Relation<
+      'api::site.site',
+      'oneToMany',
+      'api::site.site'
+    >;
+    locale: Attribute.String;
+  };
+}
+
+export interface ApiSocietySociety extends Schema.CollectionType {
+  collectionName: 'societies';
+  info: {
+    singularName: 'society';
+    pluralName: 'societies';
+    displayName: 'Society';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+  };
+  attributes: {
+    name: Attribute.String &
+      Attribute.Required &
+      Attribute.Unique &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    registrationNumber: Attribute.String &
+      Attribute.Required &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }>;
+    capitalCHF: Attribute.Decimal &
+      Attribute.Unique &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }> &
+      Attribute.SetMinMax<{
+        min: 0;
+      }>;
+    fundraiser: Attribute.Decimal &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    token: Attribute.Relation<
+      'api::society.society',
+      'oneToOne',
+      'api::token.token'
+    >;
+    site: Attribute.Relation<
+      'api::society.society',
+      'oneToOne',
+      'api::site.site'
+    >;
+    localisation: Attribute.Relation<
+      'api::society.society',
+      'oneToOne',
+      'api::localisation.localisation'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::society.society',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::society.society',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    localizations: Attribute.Relation<
+      'api::society.society',
+      'oneToMany',
+      'api::society.society'
+    >;
+    locale: Attribute.String;
+  };
+}
+
+export interface ApiTokenToken extends Schema.CollectionType {
+  collectionName: 'tokens';
+  info: {
+    singularName: 'token';
+    pluralName: 'tokens';
+    displayName: 'Token';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    name: Attribute.String;
+    supply: Attribute.Float;
+    initialPrice: Attribute.Float;
+    symbol: Attribute.String;
+    address: Attribute.String;
+    decimals: Attribute.Integer;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::token.token',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::token.token',
       'oneToOne',
       'admin::user'
     > &
@@ -714,13 +1179,22 @@ declare module '@strapi/types' {
       'admin::api-token-permission': AdminApiTokenPermission;
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
-      'api::site.site': ApiSiteSite;
       'plugin::upload.file': PluginUploadFile;
       'plugin::upload.folder': PluginUploadFolder;
+      'plugin::i18n.locale': PluginI18NLocale;
       'plugin::users-permissions.permission': PluginUsersPermissionsPermission;
       'plugin::users-permissions.role': PluginUsersPermissionsRole;
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
-      'plugin::i18n.locale': PluginI18NLocale;
+      'api::container.container': ApiContainerContainer;
+      'api::contractor.contractor': ApiContractorContractor;
+      'api::energy.energy': ApiEnergyEnergy;
+      'api::fee.fee': ApiFeeFee;
+      'api::localisation.localisation': ApiLocalisationLocalisation;
+      'api::machine.machine': ApiMachineMachine;
+      'api::payment.payment': ApiPaymentPayment;
+      'api::site.site': ApiSiteSite;
+      'api::society.society': ApiSocietySociety;
+      'api::token.token': ApiTokenToken;
     }
   }
 }
