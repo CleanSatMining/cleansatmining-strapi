@@ -748,6 +748,80 @@ export interface ApiContractorContractor extends Schema.CollectionType {
   };
 }
 
+export interface ApiDescriptionDescription extends Schema.CollectionType {
+  collectionName: 'descriptions';
+  info: {
+    singularName: 'description';
+    pluralName: 'descriptions';
+    displayName: 'Description';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+  };
+  attributes: {
+    name: Attribute.String &
+      Attribute.Required &
+      Attribute.Unique &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    description: Attribute.Blocks &
+      Attribute.Required &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    title: Attribute.String &
+      Attribute.Required &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    pictures: Attribute.Media &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    site: Attribute.Relation<
+      'api::description.description',
+      'oneToOne',
+      'api::site.site'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::description.description',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::description.description',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    localizations: Attribute.Relation<
+      'api::description.description',
+      'oneToMany',
+      'api::description.description'
+    >;
+    locale: Attribute.String;
+  };
+}
+
 export interface ApiEnergyEnergy extends Schema.CollectionType {
   collectionName: 'energies';
   info: {
@@ -795,6 +869,80 @@ export interface ApiEnergyEnergy extends Schema.CollectionType {
       'api::energy.energy',
       'oneToMany',
       'api::energy.energy'
+    >;
+    locale: Attribute.String;
+  };
+}
+
+export interface ApiFacilityFacility extends Schema.CollectionType {
+  collectionName: 'facilities';
+  info: {
+    singularName: 'facility';
+    pluralName: 'facilities';
+    displayName: 'Facility';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+  };
+  attributes: {
+    name: Attribute.String &
+      Attribute.Required &
+      Attribute.Unique &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    descriptions: Attribute.RichText &
+      Attribute.Required &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    pictures: Attribute.Media &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    site: Attribute.Relation<
+      'api::facility.facility',
+      'oneToOne',
+      'api::site.site'
+    >;
+    title: Attribute.String &
+      Attribute.Required &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::facility.facility',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::facility.facility',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    localizations: Attribute.Relation<
+      'api::facility.facility',
+      'oneToMany',
+      'api::facility.facility'
     >;
     locale: Attribute.String;
   };
@@ -955,6 +1103,65 @@ export interface ApiPaymentPayment extends Schema.CollectionType {
   };
 }
 
+export interface ApiSecuritySecurity extends Schema.CollectionType {
+  collectionName: 'securities';
+  info: {
+    singularName: 'security';
+    pluralName: 'securities';
+    displayName: 'Security';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+  };
+  attributes: {
+    name: Attribute.String &
+      Attribute.Unique &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    description: Attribute.RichText &
+      Attribute.Required &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    site: Attribute.Relation<
+      'api::security.security',
+      'oneToOne',
+      'api::site.site'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::security.security',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::security.security',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    localizations: Attribute.Relation<
+      'api::security.security',
+      'oneToMany',
+      'api::security.security'
+    >;
+    locale: Attribute.String;
+  };
+}
+
 export interface ApiSiteSite extends Schema.CollectionType {
   collectionName: 'sites';
   info: {
@@ -985,12 +1192,6 @@ export interface ApiSiteSite extends Schema.CollectionType {
         };
       }>;
     slug: Attribute.UID<'api::site.site', 'name'>;
-    description: Attribute.RichText &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
     electricityPrice: Attribute.Decimal &
       Attribute.SetPluginOptions<{
         i18n: {
@@ -1029,6 +1230,22 @@ export interface ApiSiteSite extends Schema.CollectionType {
       'api::site.site',
       'oneToMany',
       'api::payment.payment'
+    >;
+    description: Attribute.Relation<
+      'api::site.site',
+      'oneToOne',
+      'api::description.description'
+    >;
+    facility: Attribute.Relation<
+      'api::site.site',
+      'oneToOne',
+      'api::facility.facility'
+    >;
+    team: Attribute.Relation<'api::site.site', 'oneToOne', 'api::team.team'>;
+    security: Attribute.Relation<
+      'api::site.site',
+      'oneToOne',
+      'api::security.security'
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
@@ -1133,6 +1350,67 @@ export interface ApiSocietySociety extends Schema.CollectionType {
   };
 }
 
+export interface ApiTeamTeam extends Schema.CollectionType {
+  collectionName: 'teams';
+  info: {
+    singularName: 'team';
+    pluralName: 'teams';
+    displayName: 'Team';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+  };
+  attributes: {
+    name: Attribute.String &
+      Attribute.Required &
+      Attribute.Unique &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    description: Attribute.RichText &
+      Attribute.Required &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    title: Attribute.String &
+      Attribute.Required &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    pictures: Attribute.Media &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    site: Attribute.Relation<'api::team.team', 'oneToOne', 'api::site.site'>;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<'api::team.team', 'oneToOne', 'admin::user'> &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<'api::team.team', 'oneToOne', 'admin::user'> &
+      Attribute.Private;
+    localizations: Attribute.Relation<
+      'api::team.team',
+      'oneToMany',
+      'api::team.team'
+    >;
+    locale: Attribute.String;
+  };
+}
+
 export interface ApiTokenToken extends Schema.CollectionType {
   collectionName: 'tokens';
   info: {
@@ -1151,6 +1429,7 @@ export interface ApiTokenToken extends Schema.CollectionType {
     symbol: Attribute.String;
     address: Attribute.String;
     decimals: Attribute.Integer;
+    chain: Attribute.String & Attribute.Required;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -1187,13 +1466,17 @@ declare module '@strapi/types' {
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
       'api::container.container': ApiContainerContainer;
       'api::contractor.contractor': ApiContractorContractor;
+      'api::description.description': ApiDescriptionDescription;
       'api::energy.energy': ApiEnergyEnergy;
+      'api::facility.facility': ApiFacilityFacility;
       'api::fee.fee': ApiFeeFee;
       'api::localisation.localisation': ApiLocalisationLocalisation;
       'api::machine.machine': ApiMachineMachine;
       'api::payment.payment': ApiPaymentPayment;
+      'api::security.security': ApiSecuritySecurity;
       'api::site.site': ApiSiteSite;
       'api::society.society': ApiSocietySociety;
+      'api::team.team': ApiTeamTeam;
       'api::token.token': ApiTokenToken;
     }
   }

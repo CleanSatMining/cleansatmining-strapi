@@ -29,6 +29,10 @@
     },
     "decimals": {
       "type": "integer"
+    },
+    "chain": {
+      "type": "string",
+      "required": true
     }
   }
 }

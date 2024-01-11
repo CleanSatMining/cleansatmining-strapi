@@ -36,14 +36,6 @@
       "type": "uid",
       "targetField": "name"
     },
-    "description": {
-      "type": "richtext",
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
-    },
     "electricityPrice": {
       "type": "decimal",
       "pluginOptions": {
@@ -93,6 +85,30 @@
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::payment.payment"
+    },
+    "description": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::description.description",
+      "inversedBy": "site"
+    },
+    "facility": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::facility.facility",
+      "inversedBy": "site"
+    },
+    "team": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::team.team",
+      "inversedBy": "site"
+    },
+    "security": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::security.security",
+      "inversedBy": "site"
     }
   }
 }
